@@ -20,6 +20,8 @@ import com.zhongyang.xiangyangweather.logic.model.Place
 class PlaceAdapter(private val fragment: Fragment, private val mData: List<Place>) :
     RecyclerView.Adapter<PlaceAdapter.InnerHolder>() {
 
+    private lateinit var mOnPlaceItemClickListener: OnPlaceItemClickListener
+
     inner class InnerHolder(view: View) : RecyclerView.ViewHolder(view) {
         /*初始化控件*/
         val placeName: TextView = view.findViewById(R.id.tv_placeName)
@@ -38,9 +40,27 @@ class PlaceAdapter(private val fragment: Fragment, private val mData: List<Place
         val place = mData[position]
         holder.placeName.text = place.name//设置地区名称
         holder.placeAddress.text = place.address//设置地区地址
+        /*设置条目点击事件*/
+        holder.itemView.setOnClickListener {
+            mOnPlaceItemClickListener.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {
         return mData.size
+    }
+
+    /**
+     * 设置条目点击接口
+     */
+    interface OnPlaceItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    /**
+     * 设置点击方法
+     */
+    fun setOnPlaceItemClickListener(listener: OnPlaceItemClickListener) {
+        this.mOnPlaceItemClickListener = listener
     }
 }

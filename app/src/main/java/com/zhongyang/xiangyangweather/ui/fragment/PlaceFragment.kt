@@ -1,5 +1,6 @@
 package com.zhongyang.xiangyangweather.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhongyang.xiangyangweather.R
 import com.zhongyang.xiangyangweather.base.BaseApplication
+import com.zhongyang.xiangyangweather.ui.activities.WeatherActivity
 import com.zhongyang.xiangyangweather.ui.adapter.PlaceAdapter
 import com.zhongyang.xiangyangweather.ui.place.PlaceViewModel
 import com.zhongyang.xiangyangweather.ui.utils.KeyBordUtils
@@ -29,11 +31,18 @@ import kotlinx.android.synthetic.main.fragment_place.*
  * @作者 钟阳
  * @描述
  */
-class PlaceFragment : Fragment() {
+class PlaceFragment : Fragment(), PlaceAdapter.OnPlaceItemClickListener {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(PlaceViewModel::class.java)
     }
+
+    companion object {
+        const val KEY_LOCATION_LNG = "key_location_lng"
+        const val KEY_LOCATION_LAT = "key_location_lat"
+        const val KEY_PLACE_NAME = "key_place_name"
+    }
+
     private lateinit var placeAdapter: PlaceAdapter
 
     override fun onCreateView(
@@ -50,7 +59,11 @@ class PlaceFragment : Fragment() {
         initAdapter()
         /*初始化事件*/
         initEvent()
-        /**/
+        /*初始化观察者*/
+        initObserve()
+    }
+
+    private fun initObserve() {
         viewModel.placeLiveData.observe(this, Observer { result ->
             /**/
             val places = result.getOrNull()
@@ -69,6 +82,8 @@ class PlaceFragment : Fragment() {
     }
 
     private fun initEvent() {
+        /*适配器条目点击事件*/
+        placeAdapter.setOnPlaceItemClickListener(this)
         /*所搜框清空按钮点击事件*/
         iv_clear_searchBox.setOnClickListener {
             /*清空输入框内容*/
@@ -131,5 +146,20 @@ class PlaceFragment : Fragment() {
         /*设置适配器*/
         placeAdapter = PlaceAdapter(this, viewModel.placeList)
         rv_placeAddress.adapter = placeAdapter
+    }
+
+    /**
+     * 适配器条目点击方法实现
+     */
+    override fun onItemClick(position: Int) {
+        /*获取数据*/
+        val place = viewModel.placeList[position]
+        /*跳转到天气Activity*/
+        val intent = Intent(activity, WeatherActivity::class.java).apply {
+            putExtra(KEY_LOCATION_LNG, place.location.lng)
+            putExtra(KEY_LOCATION_LAT, place.location.lat)
+            putExtra(KEY_PLACE_NAME, place.name)
+        }
+        startActivity(intent)
     }
 }

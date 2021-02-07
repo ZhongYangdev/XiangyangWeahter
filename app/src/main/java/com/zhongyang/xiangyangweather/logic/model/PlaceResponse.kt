@@ -16,7 +16,10 @@ import com.google.gson.annotations.SerializedName
  * @param status 请求结果是否成功
  * @param places 请求到的地区结果
  */
-data class PlaceResponse(val status: String, val places: List<Place>)
+data class PlaceResponse(
+    val status: String,
+    val places: List<Place>
+)
 
 /**
  * 与关键词相关的地区
@@ -24,11 +27,18 @@ data class PlaceResponse(val status: String, val places: List<Place>)
  * @param location 地理位置
  * @param address 地址
  */
-data class Place(val name: String, val location: Location, @SerializedName("formatted_address") val address: String)
+data class Place(
+    val name: String,
+    val location: Location,
+    @SerializedName("formatted_address") val address: String
+)
 
 /**
  * 地理位置
  * @param lng 经度
  * @param lat 纬度
  */
-data class Location(val lng: String, val lat: String)
+data class Location(
+    val lng: Double,
+    val lat: Double
+)

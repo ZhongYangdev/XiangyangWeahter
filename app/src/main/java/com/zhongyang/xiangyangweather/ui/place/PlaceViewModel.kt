@@ -25,6 +25,6 @@ class PlaceViewModel : ViewModel() {
     }
 
     fun searchPlaces(query: String) {
-        searchLiveData.value = query
+        searchLiveData.value = query//赋值
     }
 }

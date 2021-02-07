@@ -16,12 +16,29 @@ import kotlin.coroutines.suspendCoroutine
  * @作者 钟阳
  * @描述 彩云API
  */
-object RosyCloudsApi {
+object WeatherNetwork {
 
-    private val placeService = ServiceCreator.create<PlaceService>()
+    private val placeService = ServiceCreator.create<IRosyCloudsService>()
 
+    /**
+     * 获取搜索地区数据方法
+     */
     suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()
 
+    /**
+     * 获取实时天气方法
+     */
+    suspend fun realtimeWeather(lng: Double, lat: Double) =
+        placeService.getRealtimeData(lng, lat).await()
+
+    /**
+     * 获取预测天气方法
+     */
+    suspend fun dailyWeather(lng: Double, lat: Double) = placeService.getDailyData(lng, lat).await()
+
+    /**
+     * 使用协程简化Retrofit回调
+     */
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->
             enqueue(object : Callback<T> {
@@ -37,7 +54,6 @@ object RosyCloudsApi {
                     /*输出异常*/
                     continuation.resumeWithException(t)
                 }
-
             })
         }
     }
