@@ -17,9 +17,9 @@ import com.zhongyang.xiangyangweather.logic.model.Location
 class WeatherViewModel : ViewModel() {
 
     /*相关变量数据*/
-    val locationLng = 0.00//地区经度
-    val locationLat = 0.00//地区纬度
-    val placeName = ""//地区名称
+    var locationLng = 0.00//地区经度
+    var locationLat = 0.00//地区纬度
+    var placeName = ""//地区名称
 
     private val locationLiveData = MutableLiveData<Location>()//
 

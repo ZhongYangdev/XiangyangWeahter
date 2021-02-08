@@ -3,4 +3,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_placeSearchBox_hint">请输入想要查询城市</string>
+    <string name="text_verticalLine">|</string>
+    <string name="text_daily">预报</string>
+    <string name="text_lifeIndex">生活指数</string>
+    <string name="text_coldRisk">感冒</string>
+    <string name="text_dressing">穿衣</string>
+    <string name="text_ultraviolet">实时紫外线</string>
+    <string name="text_carWashing">洗车</string>
+    <string name="text_contentEnd">-- 人家也是有底线的啦 〃∀〃 --</string>
 </resources>

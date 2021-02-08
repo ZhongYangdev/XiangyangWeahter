@@ -45,8 +45,7 @@ object Repository {
                 /*处理请求数据失败的结果*/
                 Result.failure(
                     RuntimeException(
-                        "请求实时天气状态错误：${realtimeResponse.status}" +
-                                "请求预测天气状态错误：${dailyResponse.status}"
+                        "请求实时天气状态错误：${realtimeResponse.status}" + "请求预测天气状态错误：${dailyResponse.status}"
                     )
                 )
             }
@@ -66,7 +65,7 @@ object Repository {
             Result.success(place)
         } else {
             /*打包异常数据*/
-            Result.failure(RuntimeException("响应状态：${placeResponse.status}"))
+            Result.failure(RuntimeException("请求搜索地区结果状态错误：${placeResponse.status}"))
         }
     }
 
@@ -74,7 +73,7 @@ object Repository {
      * 简化处理异常方法
      */
     private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
-        liveData<Result<T>> {
+        liveData<Result<T>>(context) {
             val result = try {
                 /**/
                 block()

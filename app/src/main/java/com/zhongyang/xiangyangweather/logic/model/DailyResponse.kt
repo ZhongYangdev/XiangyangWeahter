@@ -1,5 +1,7 @@
 package com.zhongyang.xiangyangweather.logic.model
 
+import java.util.*
+
 /**
  * @项目名称 XiangyangWeather
  * @类名 DailyResponse
@@ -98,7 +100,7 @@ data class DailyResponse(
     )
 
     data class Skycon(
-        val date: String,
+        val date: Date,
         val value: String
     )
 
