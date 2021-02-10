@@ -104,7 +104,7 @@ class WeatherActivity : AppCompatActivity() {
         /*设置sub_weather_life_index布局中的控件显示内容*/
         val lifeIndex = daily.life_index//获取生活指数
         tv_coldRisk.text = lifeIndex.coldRisk[0].desc//感冒指数
-        tv_dressing.text = lifeIndex.dressing[0].desc//穿衣指数
+        tv_dressing.text = lifeIndex.comfort[0].desc//穿衣指数
         tv_ultraviolet.text = lifeIndex.ultraviolet[0].desc//实时紫外线指数
         tv_carWashing.text = lifeIndex.carWashing[0].desc//洗车指数
         /*设置Activity布局可见*/

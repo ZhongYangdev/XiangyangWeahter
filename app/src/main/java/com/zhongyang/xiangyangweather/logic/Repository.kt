@@ -1,6 +1,8 @@
 package com.zhongyang.xiangyangweather.logic
 
 import androidx.lifecycle.liveData
+import com.zhongyang.xiangyangweather.logic.dao.PlaceDao
+import com.zhongyang.xiangyangweather.logic.model.Place
 import com.zhongyang.xiangyangweather.logic.model.Weather
 import com.zhongyang.xiangyangweather.logic.network.WeatherNetwork
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +19,21 @@ import kotlin.coroutines.CoroutineContext
  * @描述 数据获取与缓存的仓库层
  */
 object Repository {
+
+    /**
+     * 判断地址是否已经保存方法
+     */
+    fun isPlaceSaved() = PlaceDao.isPlaceSaved()
+
+    /**
+     * 获取保存地址的方法
+     */
+    fun getSavedPlace() = PlaceDao.getSavedPlace()
+
+    /**
+     * 保存地址方法
+     */
+    fun savePlace(place: Place) = PlaceDao.savePlace(place)
 
     /**
      * 封装获取天气方法

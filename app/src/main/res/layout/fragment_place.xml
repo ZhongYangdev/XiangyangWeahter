@@ -42,7 +42,6 @@
             android:layout_height="40dp"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
-            android:text="南部县河源村"
             android:background="@drawable/shape_place_search_box"
             android:ems="10"
             android:hint="@string/text_placeSearchBox_hint"
@@ -65,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08344733" />
+        app:layout_constraintGuide_percent="0.09104704" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_placeAddress"

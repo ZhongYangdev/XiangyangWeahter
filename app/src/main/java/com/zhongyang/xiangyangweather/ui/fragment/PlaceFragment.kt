@@ -55,6 +55,19 @@ class PlaceFragment : Fragment(), PlaceAdapter.OnPlaceItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        /*判断是否有保存的地区数据，若有数据就直接跳赋值转到天气界面*/
+        if (viewModel.isPlaceSaved()) {
+            val place = viewModel.getSavedPlace()//获取保存的地区数据
+            val intent = Intent(context, WeatherActivity::class.java).apply {
+                /*封装数据*/
+                putExtra(KEY_PLACE_NAME, place.name)//地区名称
+                putExtra(KEY_LOCATION_LNG, place.location.lng)//地区经度
+                putExtra(KEY_LOCATION_LAT, place.location.lat)//地区纬度
+            }
+            startActivity(intent)//启动跳转
+            activity?.finish()//关闭当前Activity
+            return
+        }
         /*初始化适配器相关*/
         initAdapter()
         /*初始化事件*/
@@ -151,7 +164,7 @@ class PlaceFragment : Fragment(), PlaceAdapter.OnPlaceItemClickListener {
     /**
      * 适配器条目点击方法实现
      */
-    override fun onItemClick(position: Int) {
+    override fun onItemClick(position: Int, fragment: PlaceFragment) {
         /*获取数据*/
         val place = viewModel.placeList[position]
         /*跳转到天气Activity*/
@@ -160,6 +173,8 @@ class PlaceFragment : Fragment(), PlaceAdapter.OnPlaceItemClickListener {
             putExtra(KEY_LOCATION_LAT, place.location.lat)
             putExtra(KEY_PLACE_NAME, place.name)
         }
-        startActivity(intent)
+        fragment.viewModel.savePlace(place)//通过sp保存当前地区数据
+        startActivity(intent)//启动跳转
+        activity?.finish()//关闭当前Fragment
     }
 }

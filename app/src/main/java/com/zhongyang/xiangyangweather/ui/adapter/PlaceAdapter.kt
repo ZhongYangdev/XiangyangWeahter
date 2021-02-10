@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.zhongyang.xiangyangweather.R
 import com.zhongyang.xiangyangweather.logic.model.Place
+import com.zhongyang.xiangyangweather.ui.fragment.PlaceFragment
 
 /**
  * @项目名称 XiangyangWeather
@@ -17,7 +17,7 @@ import com.zhongyang.xiangyangweather.logic.model.Place
  * @作者 钟阳
  * @描述 显示获取到的地区的适配器
  */
-class PlaceAdapter(private val fragment: Fragment, private val mData: List<Place>) :
+class PlaceAdapter(private val fragment: PlaceFragment, private val mData: List<Place>) :
     RecyclerView.Adapter<PlaceAdapter.InnerHolder>() {
 
     private lateinit var mOnPlaceItemClickListener: OnPlaceItemClickListener
@@ -42,7 +42,7 @@ class PlaceAdapter(private val fragment: Fragment, private val mData: List<Place
         holder.placeAddress.text = place.address//设置地区地址
         /*设置条目点击事件*/
         holder.itemView.setOnClickListener {
-            mOnPlaceItemClickListener.onItemClick(position)
+            mOnPlaceItemClickListener.onItemClick(position,fragment)
         }
     }
 
@@ -54,7 +54,7 @@ class PlaceAdapter(private val fragment: Fragment, private val mData: List<Place
      * 设置条目点击接口
      */
     interface OnPlaceItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, fragment: PlaceFragment)
     }
 
     /**
