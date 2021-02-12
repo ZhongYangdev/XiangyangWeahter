@@ -2,6 +2,7 @@ package com.zhongyang.xiangyangweather.ui.utils
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import com.zhongyang.xiangyangweather.base.BaseApplication
 
 /**
  * @项目名称 XiangyangWeather
@@ -19,7 +20,7 @@ object ToastUtil {
     fun showToast(tips: String) {
 
         if (mToast == null) {
-            //TODO: mToast = Toast.makeText(context, tips, Toast.LENGTH_SHORT)
+            mToast = Toast.makeText(BaseApplication.context, tips, Toast.LENGTH_SHORT)
         } else {
             mToast?.setText(tips)
         }

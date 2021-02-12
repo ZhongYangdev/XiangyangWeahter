@@ -14,6 +14,7 @@ import com.zhongyang.xiangyangweather.R
 import com.zhongyang.xiangyangweather.logic.model.Weather
 import com.zhongyang.xiangyangweather.logic.model.getSky
 import com.zhongyang.xiangyangweather.ui.fragment.PlaceFragment
+import com.zhongyang.xiangyangweather.ui.utils.ToastUtil
 import com.zhongyang.xiangyangweather.ui.weahter.WeatherViewModel
 import kotlinx.android.synthetic.main.activity_weather.*
 import kotlinx.android.synthetic.main.sub_weather_forecast.*
@@ -38,12 +39,38 @@ class WeatherActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE//改变系统UI的显示
         window.statusBarColor = Color.TRANSPARENT//将状态栏设置为透明色
         setContentView(R.layout.activity_weather)//加载布局文件
+        /*初始化控件*/
+        initView()
+        /*初始化事件*/
+        initEvent()
         /*获取跳转数据*/
         getIntentData()
         /*初始化观察者*/
         initObserve()
-        /*获取天气数据*/
+        /*刷新天气信息*/
+        refreshWeather()
+    }
+
+    private fun initEvent() {
+        /*刷新控件刷新事件*/
+        srl_refreshWeather.setOnRefreshListener {
+            /*刷新天气信息*/
+            refreshWeather()
+        }
+    }
+
+    private fun refreshWeather() {
+        /*获取最新天气信息*/
         weatherViewModel.getWeather(weatherViewModel.locationLng, weatherViewModel.locationLat)
+        /*设置刷新控件*/
+        srl_refreshWeather.isRefreshing = true
+        /*提示*/
+        ToastUtil.showToast("天气更新完毕")
+    }
+
+    private fun initView() {
+        /*刷新控件*/
+        srl_refreshWeather.setColorSchemeResources(R.color.teal_200)//设置刷新控件颜色
     }
 
     private fun initObserve() {
@@ -58,6 +85,8 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()//提示
                 result.exceptionOrNull()?.printStackTrace()//输出异常
             }
+            /*获取导数据后设置刷新控件*/
+            srl_refreshWeather.isRefreshing = false
         })
     }
 

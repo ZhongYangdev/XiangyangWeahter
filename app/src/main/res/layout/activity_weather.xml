@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nsv_weatherLayout"
+    android:id="@+id/srl_refreshWeather"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:visibility="invisible"
     tools:context=".ui.activities.WeatherActivity">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_weatherLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:visibility="invisible">
 
-        <!--天气信息展示-->
-        <include layout="@layout/sub_weather_info" />
-
-        <!--天气预报展示-->
-        <include layout="@layout/sub_weather_forecast" />
-
-        <!--生活指数展示-->
-        <include layout="@layout/sub_weather_life_index" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="10dp"
-            android:text="@string/text_contentEnd" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <!--天气信息展示-->
+            <include layout="@layout/sub_weather_info" />
 
-</androidx.core.widget.NestedScrollView>
+            <!--天气预报展示-->
+            <include layout="@layout/sub_weather_forecast" />
+
+            <!--生活指数展示-->
+            <include layout="@layout/sub_weather_life_index" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="10dp"
+                android:text="@string/text_contentEnd" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
