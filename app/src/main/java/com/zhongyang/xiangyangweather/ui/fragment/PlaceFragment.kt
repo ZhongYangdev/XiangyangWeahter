@@ -16,11 +16,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zhongyang.xiangyangweather.R
 import com.zhongyang.xiangyangweather.base.BaseApplication
+import com.zhongyang.xiangyangweather.ui.activities.MainActivity
 import com.zhongyang.xiangyangweather.ui.activities.WeatherActivity
 import com.zhongyang.xiangyangweather.ui.adapter.PlaceAdapter
 import com.zhongyang.xiangyangweather.ui.place.PlaceViewModel
 import com.zhongyang.xiangyangweather.ui.utils.KeyBordUtils
 import com.zhongyang.xiangyangweather.ui.utils.ToastUtil
+import kotlinx.android.synthetic.main.activity_weather.*
 import kotlinx.android.synthetic.main.fragment_place.*
 
 /**
@@ -56,7 +58,7 @@ class PlaceFragment : Fragment(), PlaceAdapter.OnPlaceItemClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         /*判断是否有保存的地区数据，若有数据就直接跳赋值转到天气界面*/
-        if (viewModel.isPlaceSaved()) {
+        if (activity is MainActivity && viewModel.isPlaceSaved()) {
             val place = viewModel.getSavedPlace()//获取保存的地区数据
             val intent = Intent(context, WeatherActivity::class.java).apply {
                 /*封装数据*/
@@ -167,14 +169,24 @@ class PlaceFragment : Fragment(), PlaceAdapter.OnPlaceItemClickListener {
     override fun onItemClick(position: Int, fragment: PlaceFragment) {
         /*获取数据*/
         val place = viewModel.placeList[position]
-        /*跳转到天气Activity*/
-        val intent = Intent(activity, WeatherActivity::class.java).apply {
-            putExtra(KEY_LOCATION_LNG, place.location.lng)
-            putExtra(KEY_LOCATION_LAT, place.location.lat)
-            putExtra(KEY_PLACE_NAME, place.name)
+        /*判断当前是否是WeatherActivity*/
+        val activity = fragment.activity//获取当前Activity
+        if (activity is WeatherActivity) {
+            activity.dl_leftCon.closeDrawers()//关闭滑动菜单
+            activity.weatherViewModel.locationLng = place.location.lng//将经度赋值
+            activity.weatherViewModel.locationLat = place.location.lat//将纬度赋值
+            activity.weatherViewModel.placeName = place.name//将地区名称赋值
+            activity.refreshWeather()//调用刷新天气方法
+        } else {
+            /*跳转到天气Activity*/
+            val intent = Intent(activity, WeatherActivity::class.java).apply {
+                putExtra(KEY_LOCATION_LNG, place.location.lng)
+                putExtra(KEY_LOCATION_LAT, place.location.lat)
+                putExtra(KEY_PLACE_NAME, place.name)
+            }
+            fragment.startActivity(intent)//启动跳转
+            activity?.finish()//关闭当前Fragment
         }
         fragment.viewModel.savePlace(place)//通过sp保存当前地区数据
-        startActivity(intent)//启动跳转
-        activity?.finish()//关闭当前Fragment
     }
 }

@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.zhongyang.xiangyangweather.R
+import com.zhongyang.xiangyangweather.base.BaseApplication
 import com.zhongyang.xiangyangweather.logic.model.Weather
 import com.zhongyang.xiangyangweather.logic.model.getSky
 import com.zhongyang.xiangyangweather.ui.fragment.PlaceFragment
+import com.zhongyang.xiangyangweather.ui.utils.KeyBordUtils
 import com.zhongyang.xiangyangweather.ui.utils.ToastUtil
 import com.zhongyang.xiangyangweather.ui.weahter.WeatherViewModel
 import kotlinx.android.synthetic.main.activity_weather.*
@@ -25,7 +28,7 @@ import java.util.*
 
 class WeatherActivity : AppCompatActivity() {
 
-    private val weatherViewModel by lazy {
+    val weatherViewModel by lazy {
         ViewModelProvider(this).get(WeatherViewModel::class.java)
     }
 
@@ -52,6 +55,27 @@ class WeatherActivity : AppCompatActivity() {
     }
 
     private fun initEvent() {
+        /*监听滑动菜单的状态*/
+        dl_leftCon.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+            override fun onDrawerOpened(drawerView: View) {}
+
+            /**
+             * 滑动菜单关闭时
+             */
+            override fun onDrawerClosed(drawerView: View) {
+                /*隐藏键盘*/
+                KeyBordUtils.hide(BaseApplication.context, drawerView)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {}
+
+        })
+        /*导航栏按钮点击事件*/
+        btn_nav.setOnClickListener {
+            dl_leftCon.openDrawer(GravityCompat.START)//显示左侧内容
+        }
         /*刷新控件刷新事件*/
         srl_refreshWeather.setOnRefreshListener {
             /*刷新天气信息*/
@@ -59,13 +83,13 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun refreshWeather() {
+    fun refreshWeather() {
         /*获取最新天气信息*/
         weatherViewModel.getWeather(weatherViewModel.locationLng, weatherViewModel.locationLat)
         /*设置刷新控件*/
         srl_refreshWeather.isRefreshing = true
         /*提示*/
-        ToastUtil.showToast("天气更新完毕")
+        ToastUtil.showToast("天气更新成功")
     }
 
     private fun initView() {
@@ -82,7 +106,7 @@ class WeatherActivity : AppCompatActivity() {
 //                Log.d(tag, "获取数据成功...")
             } else {
 //                Log.d(tag, "获取数据失败...")
-                Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()//提示
+                ToastUtil.showToast("无法成功获取天气信息")//提示
                 result.exceptionOrNull()?.printStackTrace()//输出异常
             }
             /*获取导数据后设置刷新控件*/

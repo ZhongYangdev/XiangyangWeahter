@@ -1,39 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/srl_refreshWeather"
+    android:id="@+id/dl_leftCon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.WeatherActivity">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_weatherLayout"
+    <!--天气主界面显示内容-->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_refreshWeather"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_weatherLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:visibility="invisible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--天气信息展示-->
+                <include layout="@layout/sub_weather_info" />
+
+                <!--天气预报展示-->
+                <include layout="@layout/sub_weather_forecast" />
+
+                <!--生活指数展示-->
+                <include layout="@layout/sub_weather_life_index" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="10dp"
+                    android:text="@string/text_contentEnd" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!--左侧显示内容-->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:visibility="invisible">
+        android:layout_gravity="start"
+        android:background="@color/teal_200"
+        android:clickable="true"
+        android:focusable="true">
 
-        <LinearLayout
+        <fragment
+            android:id="@+id/frg_place"
+            android:name="com.zhongyang.xiangyangweather.ui.fragment.PlaceFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp" />
 
-            <!--天气信息展示-->
-            <include layout="@layout/sub_weather_info" />
+    </FrameLayout>
 
-            <!--天气预报展示-->
-            <include layout="@layout/sub_weather_forecast" />
-
-            <!--生活指数展示-->
-            <include layout="@layout/sub_weather_life_index" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginVertical="10dp"
-                android:text="@string/text_contentEnd" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
